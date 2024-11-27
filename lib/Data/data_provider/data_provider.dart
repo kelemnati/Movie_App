@@ -57,4 +57,29 @@ class MovieService {
       throw Exception('Failed to fetch top-rated movies');
     }
   }
+
+  Future<Map<String, dynamic>> fetchMovieDetail(int movieId) async {
+    final url =
+        'https://api.themoviedb.org/3/movie/$movieId?api_key=${dotenv.env['TMDB_API_KEY']}';
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return data;
+    } else {
+      throw Exception('Failed to fetch movie details');
+    }
+  }
+
+  Future<List<dynamic>> fetchSearchedMovie(String title) async {
+    final url =
+        'https://api.themoviedb.org/3/search/movie?api_key=${dotenv.env['TMDB_API_KEY']}&query=$title';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return data['results'];
+    } else {
+      throw Exception('Failed to fetch searched movies');
+    }
+  }
 }

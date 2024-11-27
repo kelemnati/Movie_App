@@ -13,3 +13,15 @@ class FetchMoviesByGenre extends MovieFeatureEvent {
 
   FetchMoviesByGenre(this.genreId);
 }
+
+class FetchMovieDetail extends MovieFeatureEvent {
+  final int movieId;
+
+  FetchMovieDetail(this.movieId);
+}
+
+class SearchMovieDetail extends MovieFeatureEvent {
+  final String title;
+
+  SearchMovieDetail({required this.title});
+}

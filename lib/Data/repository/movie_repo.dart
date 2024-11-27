@@ -35,4 +35,14 @@ class MovieRepository {
     final data = await dataProvider.fetchTopRatedMovies();
     return _convertToMovieModels(data);
   }
+
+  Future<MovieModel> getMovieDetail(int movieId) async {
+    final data = await dataProvider.fetchMovieDetail(movieId);
+    return MovieModel.fromJson(data);
+  }
+
+  Future<List<MovieModel>> getSearchedMovie(String title) async {
+    final data = await dataProvider.fetchSearchedMovie(title);
+    return _convertToMovieModels(data);
+  }
 }

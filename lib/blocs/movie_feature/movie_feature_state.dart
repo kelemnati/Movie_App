@@ -12,6 +12,18 @@ class MovieLoaded extends MovieFeatureState {
   MovieLoaded(this.movie);
 }
 
+class MovieDetailLoaded extends MovieFeatureState {
+  final MovieModel movie;
+
+  MovieDetailLoaded(this.movie);
+}
+
+class MovieSearchLoaded extends MovieFeatureState {
+  final List<MovieModel> movies;
+
+  MovieSearchLoaded(this.movies);
+}
+
 class MovieError extends MovieFeatureState {
   final String message;
 

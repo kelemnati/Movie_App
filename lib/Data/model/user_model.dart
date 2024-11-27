@@ -16,7 +16,9 @@ class UserModel {
         id: json['id'],
         email: json['email'],
         userName: json['userName'],
-        likedMovies: json['likedMovies'] ?? []);
+        likedMovies: (json['likedMovies'] as List<dynamic>?)
+            ?.map((item) => item as String)
+            .toList());
   }
 
   Map<String, dynamic> toJson() {

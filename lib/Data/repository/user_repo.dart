@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:movie_app/Data/data_provider/user_data_provider.dart';
 import 'package:movie_app/Data/model/user_model.dart';
 
@@ -36,6 +38,14 @@ class UserRepository {
       await userDataProvider.addLikedMovie(movieId);
     } catch (e) {
       throw Exception("Failed to add liked movie: $e");
+    }
+  }
+
+  Future<List<String>> fetchLikedMovies() async {
+    try {
+      return await userDataProvider.getLikedMovies();
+    } catch (e) {
+      throw Exception("Failed to fetch liked movies: $e");
     }
   }
 

@@ -16,6 +16,8 @@ class MovieFeatureBloc extends Bloc<MovieFeatureEvent, MovieFeatureState> {
     on<FetchTrendingMovies>(_fetchTrendingMovies);
     on<FetchTopRatedMovies>(_fetchTopRatedMovies);
     on<FetchMoviesByGenre>(_fetchMoviesByGenre);
+    on<FetchMovieDetail>(_fetchMovieDetail);
+    on<SearchMovieDetail>(_searchMovieDetail);
   }
 
   FutureOr<void> _fetchPopularMovies(
@@ -57,6 +59,28 @@ class MovieFeatureBloc extends Bloc<MovieFeatureEvent, MovieFeatureState> {
     try {
       final movies = await movieRepository.getMoviesByGenre(event.genreId);
       emit(MovieLoaded(movies));
+    } catch (e) {
+      emit(MovieError(e.toString()));
+    }
+  }
+
+  FutureOr<void> _fetchMovieDetail(
+      FetchMovieDetail event, Emitter<MovieFeatureState> emit) async {
+    emit(MovieLoading());
+    try {
+      final movieDetail = await movieRepository.getMovieDetail(event.movieId);
+      emit(MovieDetailLoaded(movieDetail));
+    } catch (e) {
+      emit(MovieError(e.toString()));
+    }
+  }
+
+  FutureOr<void> _searchMovieDetail(
+      SearchMovieDetail event, Emitter<MovieFeatureState> emit) async {
+    emit(MovieLoading());
+    try {
+      final movies = await movieRepository.getSearchedMovie(event.title);
+      emit(MovieSearchLoaded(movies));
     } catch (e) {
       emit(MovieError(e.toString()));
     }

@@ -92,4 +92,23 @@ class UserDataProvider {
       throw Exception("Error signing out: $e");
     }
   }
+
+  Future<List<String>> getLikedMovies() async {
+    try {
+      final User? user = _auth.currentUser;
+      if (user == null) {
+        throw Exception("No user is signed in");
+      }
+      final userDoc = await _firestore.collection('users').doc(user.uid).get();
+
+      if (userDoc.exists) {
+        final likedMovies = userDoc.data()?['likedMovies'] as List<dynamic>?;
+        return likedMovies?.cast<String>() ?? [];
+      } else {
+        throw Exception("User document does not exist");
+      }
+    } catch (e) {
+      throw Exception("Failed to fetch liked movies: $e");
+    }
+  }
 }
