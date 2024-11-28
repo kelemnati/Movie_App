@@ -70,16 +70,54 @@ class MovieService {
     }
   }
 
-  Future<List<dynamic>> fetchSearchedMovie(String title) async {
-    final url =
-        'https://api.themoviedb.org/3/search/movie?api_key=${dotenv.env['TMDB_API_KEY']}&query=$title';
-    final response = await http.get(Uri.parse(url));
+  Future<List<dynamic>> searchMovies({
+    required String query,
+    int? genreId,
+    double? minRating,
+    double? maxRating,
+    String? language,
+    String? sortBy,
+    int? releaseYear,
+    DateTime? releaseDateStart,
+    DateTime? releaseDateEnd,
+    List<int>? castIds,
+    List<int>? crewIds,
+    List<int>? keywordIds,
+    List<int>? companyIds,
+    String? region,
+    List<int>? watchProviderIds,
+  }) async {
+    final queryParameters = {
+      'api_key': apiKey,
+      'query': query,
+      if (genreId != null) 'with_genres': genreId.toString(),
+      if (minRating != null) 'vote_average.gte': minRating.toString(),
+      if (maxRating != null) 'vote_average.lte': maxRating.toString(),
+      if (language != null) 'with_original_language': language,
+      if (sortBy != null) 'sort_by': sortBy,
+      if (releaseYear != null) 'primary_release_year': releaseYear.toString(),
+      if (releaseDateStart != null)
+        'primary_release_date.gte': releaseDateStart.toIso8601String(),
+      if (releaseDateEnd != null)
+        'primary_release_date.lte': releaseDateEnd.toIso8601String(),
+      if (castIds != null) 'with_cast': castIds.join(','),
+      if (crewIds != null) 'with_crew': crewIds.join(','),
+      if (keywordIds != null) 'with_keywords': keywordIds.join(','),
+      if (companyIds != null) 'with_companies': companyIds.join(','),
+      if (region != null) 'region': region,
+      if (watchProviderIds != null)
+        'with_watch_providers': watchProviderIds.join(','),
+    };
+
+    final uri =
+        Uri.https('api.themoviedb.org', '/3/search/movie', queryParameters);
+    final response = await http.get(uri);
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       return data['results'];
     } else {
-      throw Exception('Failed to fetch searched movies');
+      throw Exception('Failed to fetch search results');
     }
   }
 }

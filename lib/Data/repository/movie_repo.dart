@@ -41,8 +41,40 @@ class MovieRepository {
     return MovieModel.fromJson(data);
   }
 
-  Future<List<MovieModel>> getSearchedMovie(String title) async {
-    final data = await dataProvider.fetchSearchedMovie(title);
+  Future<List<MovieModel>> searchMovies({
+    required String query,
+    int? genreId,
+    double? minRating,
+    double? maxRating,
+    String? language,
+    String? sortBy,
+    int? releaseYear,
+    DateTime? releaseDateStart,
+    DateTime? releaseDateEnd,
+    List<int>? castIds,
+    List<int>? crewIds,
+    List<int>? keywordIds,
+    List<int>? companyIds,
+    String? region,
+    List<int>? watchProviderIds,
+  }) async {
+    final data = await dataProvider.searchMovies(
+      query: query,
+      genreId: genreId,
+      minRating: minRating,
+      maxRating: maxRating,
+      language: language,
+      sortBy: sortBy,
+      releaseYear: releaseYear,
+      releaseDateStart: releaseDateStart,
+      releaseDateEnd: releaseDateEnd,
+      castIds: castIds,
+      crewIds: crewIds,
+      keywordIds: keywordIds,
+      companyIds: companyIds,
+      region: region,
+      watchProviderIds: watchProviderIds,
+    );
     return _convertToMovieModels(data);
   }
 }

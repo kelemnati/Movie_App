@@ -17,7 +17,9 @@ class MovieFeatureBloc extends Bloc<MovieFeatureEvent, MovieFeatureState> {
     on<FetchTopRatedMovies>(_fetchTopRatedMovies);
     on<FetchMoviesByGenre>(_fetchMoviesByGenre);
     on<FetchMovieDetail>(_fetchMovieDetail);
-    on<SearchMovieDetail>(_searchMovieDetail);
+    on<SearchMovies>(_searchMovies);
+    on<FetchRecentSearches>(_fetchRecentSearches);
+    on<FetchSearchSuggestions>(_fetchSearchSuggestions);
   }
 
   FutureOr<void> _fetchPopularMovies(
@@ -64,6 +66,7 @@ class MovieFeatureBloc extends Bloc<MovieFeatureEvent, MovieFeatureState> {
     }
   }
 
+// to fetch movie detail when the user clicked(tap) on movie poster
   FutureOr<void> _fetchMovieDetail(
       FetchMovieDetail event, Emitter<MovieFeatureState> emit) async {
     emit(MovieLoading());
@@ -75,14 +78,35 @@ class MovieFeatureBloc extends Bloc<MovieFeatureEvent, MovieFeatureState> {
     }
   }
 
-  FutureOr<void> _searchMovieDetail(
-      SearchMovieDetail event, Emitter<MovieFeatureState> emit) async {
+  FutureOr<void> _searchMovies(
+      SearchMovies event, Emitter<MovieFeatureState> emit) async {
     emit(MovieLoading());
     try {
-      final movies = await movieRepository.getSearchedMovie(event.title);
-      emit(MovieSearchLoaded(movies));
+      final movies = await movieRepository.searchMovies(
+        query: event.query,
+        genreId: event.genreId,
+        minRating: event.minRating,
+        maxRating: event.maxRating,
+        language: event.language,
+        sortBy: event.sortBy,
+        releaseYear: event.releaseYear,
+        releaseDateStart: event.releaseDateStart,
+        releaseDateEnd: event.releaseDateEnd,
+        castIds: event.castIds,
+        crewIds: event.crewIds,
+        keywordIds: event.keywordIds,
+        companyIds: event.companyIds,
+        region: event.region,
+        watchProviderIds: event.watchProviderIds,
+      );
     } catch (e) {
       emit(MovieError(e.toString()));
     }
   }
+
+  FutureOr<void> _fetchRecentSearches(
+      FetchRecentSearches event, Emitter<MovieFeatureState> emit) {}
+
+  FutureOr<void> _fetchSearchSuggestions(
+      FetchSearchSuggestions event, Emitter<MovieFeatureState> emit) {}
 }
