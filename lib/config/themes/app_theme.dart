@@ -55,7 +55,7 @@ class LightModeTheme extends AppTheme {
   @override
   Brightness get brightness => Brightness.light;
   @override
-  Color get primary => const Color(0xFF6200EA);
+  Color get primary => const Color(0xFFEB5B00);
   @override
   Color get secondary => const Color(0xFF03DAC6);
   @override
@@ -64,7 +64,7 @@ class LightModeTheme extends AppTheme {
   Color get alternate => const Color(0xFFBB86FC);
 
   @override
-  Color get primaryText => const Color(0xFFB0BEC5); // Grey 400
+  Color get primaryText => const Color.fromARGB(255, 92, 129, 148); // Grey 400
   @override
   Color get secondaryText => const Color(0xFF546E7A); // Dark Grey
   @override
@@ -139,7 +139,7 @@ class DarkModeTheme extends AppTheme {
   Color get alternate => const Color(0xFF3700B3);
 
   @override
-  Color get primaryText => const Color(0xFFEB5B00); // Orange
+  Color get primaryText => const Color(0xFFFFFFFF); // Orange
   @override
   Color get secondaryText => const Color(0xFFFA8C00); // Light Orange
   @override

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_app/Data/data_provider/data_provider.dart';
 import 'package:movie_app/Data/data_provider/user_data_provider.dart';
 import 'package:movie_app/Data/repository/movie_repo.dart';
@@ -18,8 +17,6 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  // await dotenv.load(fileName: ".env");
 
   final userRepository = UserRepository(userDataProvider: UserDataProvider());
   final movieRepository = MovieRepository(dataProvider: MovieService());
