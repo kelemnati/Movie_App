@@ -1,14 +1,15 @@
 import 'dart:convert';
 
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_app/secret_key.dart';
 
 class MovieService {
-  final String? apiKey = dotenv.env['TMDB_API_KEY' ?? ''];
+  final String apiKey = Keys.TMDB_API_KEY;
 
   Future<List<dynamic>> fetchMoviesByGenre(int genreId) async {
     final url =
-        'https://api.themoviedb.org/3/discover/movie?api_key=${dotenv.env['TMDB_API_KEY']}&with_genres=$genreId';
+        'https://api.themoviedb.org/3/discover/movie?api_key=$apiKey&with_genres=$genreId';
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -21,7 +22,7 @@ class MovieService {
 
   Future<List<dynamic>> fetchMoviesByPopularity() async {
     final url =
-        'https://api.themoviedb.org/3/discover/movie?api_key=${dotenv.env['TMDB_API_KEY']}&sort_by=popularity.desc';
+        'https://api.themoviedb.org/3/discover/movie?api_key=$apiKey&sort_by=popularity.desc';
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -34,7 +35,7 @@ class MovieService {
 
   Future<List<dynamic>> fetchTrendingMovies(String timeWindow) async {
     final url =
-        'https://api.themoviedb.org/3/trending/movie/$timeWindow?api_key=${dotenv.env['TMDB_API_KEY']}';
+        'https://api.themoviedb.org/3/trending/movie/$timeWindow?api_key=$apiKey';
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -46,8 +47,7 @@ class MovieService {
   }
 
   Future<List<dynamic>> fetchTopRatedMovies() async {
-    final url =
-        'https://api.themoviedb.org/3/movie/top_rated?api_key=${dotenv.env['TMDB_API_KEY']}';
+    final url = 'https://api.themoviedb.org/3/movie/top_rated?api_key=$apiKey';
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -59,8 +59,7 @@ class MovieService {
   }
 
   Future<Map<String, dynamic>> fetchMovieDetail(int movieId) async {
-    final url =
-        'https://api.themoviedb.org/3/movie/$movieId?api_key=${dotenv.env['TMDB_API_KEY']}';
+    final url = 'https://api.themoviedb.org/3/movie/$movieId?api_key=$apiKey';
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       final data = json.decode(response.body);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/presentation/pages/landing_page.dart';
+import 'package:movie_app/presentation/screens/sign_up_screen.dart';
 
 class AppRoutes {
   static const String landing = '/';
@@ -11,7 +12,7 @@ class AppRoutes {
   static Map<String, WidgetBuilder> getRoutes() {
     return {
       landing: (context) => const LandingPage(),
-      // signUp: (context) => const SignUpScreen(),
+      signUp: (context) => const SignUpScreen(),
       // login: (context) => const LoginScreen(),
       // home: (context) => const HomeScreen(),
       // movieDetails: (context) => const MovieDetailsScreen(),

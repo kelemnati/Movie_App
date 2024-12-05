@@ -9,57 +9,51 @@ class LandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
     final typography = theme.typography;
+    final double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-        body: Column(
-      children: [
-        Expanded(
-            flex: 3,
-            child: Container(
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("assets/images/image_one.jpg"),
-                      fit: BoxFit.cover)),
-            )),
-        Expanded(
-            flex: 2,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "Movie App",
-                  style: typography.headlineLarge,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                    'Discover movies, create your favorites list, and enjoy personalized recommendations.',
-                    textAlign: TextAlign.center,
-                    style: typography.bodyLargeWhite),
-                const SizedBox(height: 32),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, AppRoutes.signUp);
-                  },
-                  style: ButtonStyle(
-                    shape: WidgetStatePropertyAll(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(theme.radius),
-                      ),
-                    ),
-                    padding: const WidgetStatePropertyAll(
-                      EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                    ),
-                  ),
-                  child: Text(
-                    'Get Started',
-                    style: typography.labelLarge,
-                  ),
-                )
-              ],
-            ))
-      ],
-    ));
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+        body: Column(children: [
+          Container(
+            height: screenHeight / 2.9,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/image_one.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 13,
+          ),
+          Text(
+            "Movie App",
+            style: typography.headlineLarge,
+          ),
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+                'Discover movies, create your favorites list, and enjoy personalized recommendations.',
+                style: typography.displayMedium),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(50.0),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, AppRoutes.signUp);
+              },
+              child: Text(
+                'Get Started',
+                style: typography.displayMedium,
+              ),
+            ),
+          )
+        ]));
   }
 }

@@ -44,8 +44,9 @@ app.*.map.json
 /android/app/release
 
 # Environment file
-.env
+# .env 
 
 # Firebase options file
 .firebase.json
 lib/firebase_options.dart
+lib/secret_key.dart
