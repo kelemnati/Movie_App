@@ -8,6 +8,7 @@ import 'package:movie_app/Data/repository/user_repo.dart';
 import 'package:movie_app/app.dart';
 import 'package:movie_app/blocs/authentication/authentication_bloc.dart';
 import 'package:movie_app/blocs/movie_feature/movie_feature_bloc.dart';
+import 'package:movie_app/blocs/onboarding/onboarding_cubit.dart';
 import 'package:movie_app/blocs/theme/theme_cubit.dart';
 import 'package:movie_app/blocs/user_feature/user_feature_bloc.dart';
 import 'firebase_options.dart';
@@ -25,6 +26,7 @@ void main() async {
     BlocProvider(
         create: (context) =>
             AuthenticationBloc(userRepository: userRepository)),
+    BlocProvider(create: (context) => OnboardingCubit(3)),
     BlocProvider(create: (context) => ThemeCubit()..loadTheme()),
     BlocProvider(
         create: (context) =>
