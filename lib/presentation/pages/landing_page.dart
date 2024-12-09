@@ -7,7 +7,9 @@ import 'package:movie_app/config/themes/app_theme.dart';
 import 'package:movie_app/route.dart';
 
 class LandingPage extends StatelessWidget {
-  const LandingPage({super.key});
+  LandingPage({super.key});
+
+  final PageController _pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,7 @@ class LandingPage extends StatelessWidget {
             child: BlocBuilder<OnboardingCubit, int>(
               builder: (context, currentPage) {
                 return PageView.builder(
+                  controller: _pageController,
                   key: const PageStorageKey(
                       'onboardingPageView'), // Add a unique key for the PageView
                   itemCount: contetns.length,
@@ -98,6 +101,9 @@ class LandingPage extends StatelessWidget {
                     if (cubit.isLastPage) {
                       Navigator.pushNamed(context, AppRoutes.signUp);
                     } else {
+                      _pageController.nextPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeInOut);
                       cubit.nextPage();
                     }
                   },

@@ -12,7 +12,7 @@ class AppRoutes {
 
   static Map<String, WidgetBuilder> getRoutes() {
     return {
-      landing: (context) => const LandingPage(),
+      landing: (context) => LandingPage(),
       signUp: (context) => const SignUpScreen(),
       login: (context) => const LoginScreen(),
       // home: (context) => const HomeScreen(),
