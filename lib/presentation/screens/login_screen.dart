@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/blocs/authentication/authentication_bloc.dart';
 import 'package:movie_app/config/themes/app_theme.dart';
-import 'package:movie_app/presentation/widgets/input_field_widget.dart';
+import 'package:movie_app/presentation/widgets/common_widgets.dart';
 import 'package:movie_app/route.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -29,18 +29,18 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             // Title Section
-            const SizedBox(height: 70),
+            const VerticalSpacer(height: 70),
             Text(
               "Login here",
               style: typography.headlineMedium,
             ),
-            const SizedBox(height: 8),
+            const VerticalSpacer(height: 8),
             Text(
               "Welcome back, you've been missed!",
               style: typography.displayMedium,
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 32),
+            const VerticalSpacer(height: 32),
 
             // Form Section
             Form(
@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     validator: (value) =>
                         value!.contains('@') ? null : "Enter a valid email",
                   ),
-                  const SizedBox(height: 16),
+                  const VerticalSpacer(height: 16),
                   InputFieldWidget(
                     label: "Password",
                     controller: _passwordController,
@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 8),
+            const VerticalSpacer(height: 8),
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
@@ -83,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const VerticalSpacer(height: 16),
 
             // Login Button
             BlocConsumer<AuthenticationBloc, AuthenticationState>(
@@ -99,30 +99,22 @@ class _LoginScreenState extends State<LoginScreen> {
               builder: (context, state) {
                 final isLoading = state is AuthLoading;
 
-                return SizedBox(
-                  height: 55,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: isLoading
-                        ? null
-                        : () {
-                            if (_formKey.currentState!.validate()) {
-                              context.read<AuthenticationBloc>().add(
-                                    SignInRequested(
-                                      email: _emailController.text,
-                                      password: _passwordController.text,
-                                    ),
-                                  );
-                            }
-                          },
-                    child: isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : Text("Sign In", style: typography.labelLarge),
-                  ),
-                );
+                return AuthButton(
+                    text: "Sign In",
+                    isLoading: isLoading,
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        context.read<AuthenticationBloc>().add(
+                              SignInRequested(
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                              ),
+                            );
+                      }
+                    });
               },
             ),
-            const SizedBox(height: 16),
+            const VerticalSpacer(height: 16),
 
             // Create New Account Link
             TextButton(
@@ -136,41 +128,23 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
 
             // Social Media Login Section
-            const SizedBox(height: 24),
+            const VerticalSpacer(height: 24),
             Text(
               "Or continue with",
               style: typography.displayMedium,
             ),
-            const SizedBox(height: 16),
+            const VerticalSpacer(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _socialMediaIcon(theme, "assets/images/google.png"),
-                const SizedBox(width: 16),
-                _socialMediaIcon(theme, "assets/images/facebook.png"),
+                SocialMediaIcon(
+                    assetPath: "assets/images/google.png", theme: theme),
+                const HorizontalSpacer(width: 16),
+                SocialMediaIcon(
+                    assetPath: "assets/images/facebook.png", theme: theme),
               ],
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _socialMediaIcon(AppTheme theme, String assetPath) {
-    return InkWell(
-      onTap: () {
-        // Social Media Login Action
-      },
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: theme.secondaryBackground,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Image.asset(
-          assetPath,
-          height: 24,
-          width: 24,
         ),
       ),
     );

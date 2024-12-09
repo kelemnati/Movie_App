@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/blocs/authentication/authentication_bloc.dart';
 import 'package:movie_app/config/themes/app_theme.dart';
-import 'package:movie_app/presentation/widgets/input_field_widget.dart';
+import 'package:movie_app/presentation/widgets/common_widgets.dart';
 import 'package:movie_app/route.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -30,16 +30,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            // Title and Subtitle
             Column(
               children: [
                 Text(
                   "Create Account",
                   style: typography.headlineMedium,
                 ),
-                const SizedBox(
-                  height: 15,
-                ),
+                const VerticalSpacer(height: 15),
                 Text(
                   "Create an account so you can explore all the existing movies.",
                   style: typography.displayMedium,
@@ -62,9 +59,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         value!.isNotEmpty ? null : "Username is required",
                     textInputAction: TextInputAction.next,
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const VerticalSpacer(height: 20),
                   // Email Field
                   InputFieldWidget(
                     label: "Email",
@@ -74,10 +69,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         value!.contains('@') ? null : "Enter a valid email",
                     textInputAction: TextInputAction.next,
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  // Password Field
+                  const VerticalSpacer(height: 20),
                   InputFieldWidget(
                     label: "Password",
                     controller: _passwordController,
@@ -87,9 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         : "Password must be at least 6 characters long",
                     textInputAction: TextInputAction.next,
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
+                  const VerticalSpacer(height: 20),
                   // Confirm Password Field
                   InputFieldWidget(
                     label: "Confirm Password",
@@ -104,7 +94,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
 
-            // Sign Up Button
             BlocConsumer<AuthenticationBloc, AuthenticationState>(
               listener: (context, state) {
                 if (state is AuthFailure) {
@@ -118,27 +107,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
               builder: (context, state) {
                 final isLoading = state is AuthLoading;
 
-                return SizedBox(
-                  height: 55,
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: isLoading
-                        ? null
-                        : () {
-                            if (_formKey.currentState!.validate()) {
-                              context.read<AuthenticationBloc>().add(
-                                    SignUpRequested(
-                                      email: _emailController.text,
-                                      userName: _userNameController.text,
-                                      password: _passwordController.text,
-                                    ),
-                                  );
-                            }
-                          },
-                    child: isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : Text("Sign Up", style: typography.labelLarge),
-                  ),
+                return AuthButton(
+                  text: "Sign Up",
+                  isLoading: isLoading,
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      context.read<AuthenticationBloc>().add(
+                            SignUpRequested(
+                              email: _emailController.text,
+                              userName: _userNameController.text,
+                              password: _passwordController.text,
+                            ),
+                          );
+                    }
+                  },
                 );
               },
             ),
@@ -161,9 +143,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _socialMediaIcon(theme, "assets/images/google.png"),
-                const SizedBox(width: 16),
-                _socialMediaIcon(theme, "assets/images/facebook.png"),
+                SocialMediaIcon(
+                    assetPath: "assets/images/google.png", theme: theme),
+                const HorizontalSpacer(width: 16),
+                SocialMediaIcon(
+                    assetPath: "assets/images/facebook.png", theme: theme),
               ],
             ),
           ],
@@ -171,24 +155,4 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
-}
-
-Widget _socialMediaIcon(AppTheme theme, String assetPath) {
-  return InkWell(
-    onTap: () {
-      // Social Media Login Action
-    },
-    child: Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: theme.secondaryBackground,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Image.asset(
-        assetPath,
-        height: 24,
-        width: 24,
-      ),
-    ),
-  );
 }
