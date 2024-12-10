@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SnackBar(content: Text(state.message)),
                   );
                 } else if (state is AuthSuccess) {
-                  Navigator.pushReplacementNamed(context, '/home');
+                  Navigator.pushReplacementNamed(context, AppRoutes.home);
                 }
               },
               builder: (context, state) {

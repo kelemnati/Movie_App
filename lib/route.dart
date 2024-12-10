@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/presentation/pages/landing_page.dart';
+import 'package:movie_app/presentation/screens/home_screen.dart';
 import 'package:movie_app/presentation/screens/login_screen.dart';
 import 'package:movie_app/presentation/screens/sign_up_screen.dart';
 
@@ -15,7 +16,7 @@ class AppRoutes {
       landing: (context) => LandingPage(),
       signUp: (context) => const SignUpScreen(),
       login: (context) => const LoginScreen(),
-      // home: (context) => const HomeScreen(),
+      home: (context) => const HomeScreen(),
       // movieDetails: (context) => const MovieDetailsScreen(),
     };
   }
