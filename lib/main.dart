@@ -7,6 +7,7 @@ import 'package:movie_app/Data/repository/movie_repo.dart';
 import 'package:movie_app/Data/repository/user_repo.dart';
 import 'package:movie_app/app.dart';
 import 'package:movie_app/blocs/authentication/authentication_bloc.dart';
+import 'package:movie_app/blocs/bottom_navigation/bottom_nav_cubit.dart';
 import 'package:movie_app/blocs/movie_feature/movie_feature_bloc.dart';
 import 'package:movie_app/blocs/onboarding/onboarding_cubit.dart';
 import 'package:movie_app/blocs/theme/theme_cubit.dart';
@@ -28,6 +29,7 @@ void main() async {
             AuthenticationBloc(userRepository: userRepository)),
     BlocProvider(create: (context) => OnboardingCubit(3)),
     BlocProvider(create: (context) => ThemeCubit()..loadTheme()),
+    BlocProvider(create: (context) => BottomNavCubit()),
     BlocProvider(
         create: (context) =>
             MovieFeatureBloc(movieRepository: movieRepository)),
