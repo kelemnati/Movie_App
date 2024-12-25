@@ -33,20 +33,12 @@ class MovieDetailScreen extends StatelessWidget {
             },
             builder: (context, state) {
               final isFavorite = state is UserFeaturesLoaded &&
-                  state.favoriteMovies.contains(movieModel.id);
+                  state.favoriteMovies.contains(movieModel.id.toString());
               return IconButton(
                 onPressed: () {
-                  if (isFavorite) {
-                    // Remove from favorites
-                    context
-                        .read<UserFeatureBloc>()
-                        .add(RemoveFavorite(movieId: movieModel.id.toString()));
-                  } else {
-                    // Add to favorites
-                    context
-                        .read<UserFeatureBloc>()
-                        .add(AddFavorite(movieId: movieModel.id.toString()));
-                  }
+                  context
+                      .read<UserFeatureBloc>()
+                      .add(ToggleFavorite(movieId: movieModel.id.toString()));
                 },
                 icon: Icon(
                   isFavorite ? Icons.favorite : Icons.favorite_border,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/blocs/authentication/authentication_bloc.dart';
@@ -89,8 +91,11 @@ class _LoginScreenState extends State<LoginScreen> {
             BlocConsumer<AuthenticationBloc, AuthenticationState>(
               listener: (context, state) {
                 if (state is AuthFailure) {
+                  log(state.message);
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(state.message)),
+                    SnackBar(
+                        content: Text(state.message,
+                            style: TextStyle(color: Colors.white))),
                   );
                 } else if (state is AuthSuccess) {
                   Navigator.pushReplacementNamed(context, AppRoutes.home);

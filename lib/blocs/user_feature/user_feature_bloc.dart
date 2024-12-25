@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/Data/repository/user_repo.dart';
 
@@ -12,8 +11,7 @@ class UserFeatureBloc extends Bloc<UserFeatureEvent, UserFeatureState> {
   UserFeatureBloc({required this.userRepository})
       : super(UserFeatureInitial()) {
     on<FetchFavorites>(_fetchFavorites);
-    on<AddFavorite>(_addFavorite);
-    on<RemoveFavorite>(_removeFavorite);
+    on<ToggleFavorite>(_toggleFavorite);
   }
 
   Future<void> _fetchFavorites(
@@ -27,35 +25,30 @@ class UserFeatureBloc extends Bloc<UserFeatureEvent, UserFeatureState> {
     }
   }
 
-  Future<void> _addFavorite(
-      AddFavorite event, Emitter<UserFeatureState> emit) async {
-    try {
-      await userRepository.addLikedMovie(event.movieId);
-      final currentState = state;
-      if (currentState is UserFeaturesLoaded) {
-        final updatedFavorites = List<String>.from(currentState.favoriteMovies)
-          ..add(event.movieId);
-        emit(UserFeaturesLoaded(favoriteMovies: updatedFavorites));
+  Future<void> _toggleFavorite(
+      ToggleFavorite event, Emitter<UserFeatureState> emit) async {
+    final currentState = state;
+    if (currentState is UserFeaturesLoaded) {
+      final isFavorite = currentState.favoriteMovies.contains(event.movieId);
+      try {
+        if (isFavorite) {
+          await userRepository.removeLikedMovie(event.movieId);
+          final updatedFavorites =
+              List<String>.from(currentState.favoriteMovies)
+                ..remove(event.movieId);
+          emit(UserFeaturesLoaded(favoriteMovies: updatedFavorites));
+          emit(UserFavoriteRemoved());
+        } else {
+          await userRepository.addLikedMovie(event.movieId);
+          final updatedFavorites =
+              List<String>.from(currentState.favoriteMovies)
+                ..add(event.movieId);
+          emit(UserFeaturesLoaded(favoriteMovies: updatedFavorites));
+          emit(UserFavoriteAdded());
+        }
+      } catch (e) {
+        emit(UserFeatureError(message: e.toString()));
       }
-      emit(UserFavoriteAdded());
-    } catch (e) {
-      emit(UserFeatureError(message: e.toString()));
-    }
-  }
-
-  Future<void> _removeFavorite(
-      RemoveFavorite event, Emitter<UserFeatureState> emit) async {
-    try {
-      await userRepository.removeLikedMovie(event.movieId);
-      final currentState = state;
-      if (currentState is UserFeaturesLoaded) {
-        final updatedFavorites = List<String>.from(currentState.favoriteMovies)
-          ..remove(event.movieId);
-        emit(UserFeaturesLoaded(favoriteMovies: updatedFavorites));
-      }
-      emit(UserFavoriteRemoved());
-    } catch (e) {
-      emit(UserFeatureError(message: e.toString()));
     }
   }
 }

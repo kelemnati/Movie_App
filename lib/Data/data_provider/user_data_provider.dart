@@ -6,6 +6,17 @@ class UserDataProvider {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Future<void> _ensureUserDocumentExists(User user) async {
+    final userDoc = _firestore.collection('users').doc(user.uid);
+    if (!(await userDoc.get()).exists) {
+      await userDoc.set({
+        'email': user.email,
+        'userName': user.displayName ?? 'No Name',
+        'likedMovies': [],
+      });
+    }
+  }
+
   Future<UserModel> signUp(
       String email, String password, String userName) async {
     try {
@@ -45,11 +56,24 @@ class UserDataProvider {
       final User? user = userCredential.user;
 
       if (user != null) {
+        // Ensure the user's Firestore document exists
+        final userDoc =
+            await _firestore.collection('users').doc(user.uid).get();
+        if (!userDoc.exists) {
+          // Create the Firestore document if it doesn't exist
+          await _firestore.collection('users').doc(user.uid).set({
+            'email': user.email,
+            'userName': user.displayName ?? 'No Name',
+            'likedMovies': [],
+          });
+        }
+
         return UserModel(
-            id: user.uid,
-            email: user.email!,
-            userName: user.displayName ?? 'No Name',
-            likedMovies: await getLikedMovies());
+          id: user.uid,
+          email: user.email!,
+          userName: user.displayName ?? 'No Name',
+          likedMovies: await getLikedMovies(),
+        );
       } else {
         throw Exception("Failed to sign in");
       }
@@ -61,8 +85,8 @@ class UserDataProvider {
   Future<UserModel?> getCurrentUser() async {
     try {
       final User? user = _auth.currentUser;
-
       if (user != null) {
+        await _ensureUserDocumentExists(user);
         return UserModel(
           id: user.uid,
           email: user.email!,
@@ -85,10 +109,10 @@ class UserDataProvider {
       }
 
       final userDoc = _firestore.collection('users').doc(user.uid);
-
       await userDoc.update({
         'likedMovies': FieldValue.arrayUnion([movieId]),
       });
+      print("Movie added to favorites: $movieId");
     } catch (e) {
       throw Exception("Failed to add liked movie: $e");
     }
@@ -131,7 +155,8 @@ class UserDataProvider {
         final likedMovies = userDoc.data()?['likedMovies'] as List<dynamic>?;
         return likedMovies?.cast<String>() ?? [];
       } else {
-        throw Exception("User document does not exist");
+        // If document does not exist, return an empty list
+        return [];
       }
     } catch (e) {
       throw Exception("Failed to fetch liked movies: $e");

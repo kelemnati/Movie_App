@@ -15,3 +15,9 @@ class RemoveFavorite extends UserFeatureEvent {
 
   RemoveFavorite({required this.movieId});
 }
+
+class ToggleFavorite extends UserFeatureEvent {
+  final String movieId;
+
+  ToggleFavorite({required this.movieId});
+}
