@@ -28,7 +28,9 @@ class HomeScreen extends StatelessWidget {
           children: [
             BlocBuilder<MovieFeatureBloc, MovieFeatureState>(
               builder: (context, state) {
-                if (state is MovieLoading) {
+                final isLoading =
+                    context.read<MovieFeatureBloc>().state is MovieLoading;
+                if (isLoading) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is MovieLoaded) {
                   return MovieSection(
@@ -46,9 +48,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 16),
             BlocBuilder<MovieFeatureBloc, MovieFeatureState>(
               builder: (context, state) {
-                if (state is MovieLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is MovieLoaded) {
+                if (state is MovieLoaded) {
                   return MovieSection(
                     title: 'Trending Movies',
                     movies: state.movie,
@@ -64,9 +64,7 @@ class HomeScreen extends StatelessWidget {
             const VerticalSpacer(height: 16),
             BlocBuilder<MovieFeatureBloc, MovieFeatureState>(
               builder: (context, state) {
-                if (state is MovieLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is MovieLoaded) {
+                if (state is MovieLoaded) {
                   return MovieSection(
                     title: 'Top Rated Movies',
                     movies: state.movie,

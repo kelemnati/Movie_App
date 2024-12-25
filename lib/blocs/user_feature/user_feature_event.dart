@@ -2,10 +2,16 @@ part of 'user_feature_bloc.dart';
 
 abstract class UserFeatureEvent {}
 
-class FetchLikedMovies extends UserFeatureEvent {}
+class FetchFavorites extends UserFeatureEvent {}
 
-class AddLikedMovie extends UserFeatureEvent {
+class AddFavorite extends UserFeatureEvent {
   final String movieId;
 
-  AddLikedMovie(this.movieId);
+  AddFavorite({required this.movieId});
+}
+
+class RemoveFavorite extends UserFeatureEvent {
+  final String movieId;
+
+  RemoveFavorite({required this.movieId});
 }

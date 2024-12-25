@@ -41,10 +41,12 @@ class MovieSection extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.only(left: 16),
                 child: MovieCard(
-                  posterPath: movie.posterPath, // MovieModel property
-                  title: movie.title, // MovieModel property
-                  rating: movie.rating, // MovieModel property
-                ),
+                    posterPath: movie.posterPath, // MovieModel property
+                    title: movie.title, // MovieModel property
+                    rating: movie.rating,
+                    movieModel: movie
+                    // MovieModel property
+                    ),
               );
             },
           ),

@@ -41,6 +41,15 @@ class UserRepository {
     }
   }
 
+  Future<void> removeLikedMovie(String movieId) async {
+    try {
+      await userDataProvider.removeLikedMovie(
+          movieId); // Assuming this method exists in your UserDataProvider
+    } catch (e) {
+      throw Exception("Failed to remove liked movie: $e");
+    }
+  }
+
   Future<List<String>> fetchLikedMovies() async {
     try {
       return await userDataProvider.getLikedMovies();

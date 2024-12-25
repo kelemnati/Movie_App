@@ -15,6 +15,15 @@ class UserDataProvider {
       final User? user = userCredential.user;
       if (user != null) {
         await user.updateDisplayName(userName);
+
+        // Create Firestore document in 'users' collection
+        final userDoc = _firestore.collection('users').doc(user.uid);
+        await userDoc.set({
+          'email': user.email,
+          'userName': userName,
+          'likedMovies': [],
+        });
+
         return UserModel(
           id: user.uid,
           email: user.email!,
@@ -40,7 +49,7 @@ class UserDataProvider {
             id: user.uid,
             email: user.email!,
             userName: user.displayName ?? 'No Name',
-            likedMovies: []);
+            likedMovies: await getLikedMovies());
       } else {
         throw Exception("Failed to sign in");
       }
@@ -58,7 +67,7 @@ class UserDataProvider {
           id: user.uid,
           email: user.email!,
           userName: user.displayName ?? 'No Name',
-          likedMovies: [],
+          likedMovies: await getLikedMovies(),
         );
       } else {
         return null;
@@ -82,6 +91,23 @@ class UserDataProvider {
       });
     } catch (e) {
       throw Exception("Failed to add liked movie: $e");
+    }
+  }
+
+  Future<void> removeLikedMovie(String movieId) async {
+    try {
+      final User? user = _auth.currentUser;
+      if (user == null) {
+        throw Exception("No user is signed in");
+      }
+
+      final userDoc = _firestore.collection('users').doc(user.uid);
+
+      await userDoc.update({
+        'likedMovies': FieldValue.arrayRemove([movieId]),
+      });
+    } catch (e) {
+      throw Exception("Failed to remove liked movie: $e");
     }
   }
 

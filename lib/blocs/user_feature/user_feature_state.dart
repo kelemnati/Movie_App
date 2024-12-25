@@ -4,18 +4,20 @@ abstract class UserFeatureState {}
 
 class UserFeatureInitial extends UserFeatureState {}
 
-class LikedMoviesInitial extends UserFeatureState {}
+class UserFeatureLoading extends UserFeatureState {}
 
-class LikedMoviesLoading extends UserFeatureState {}
+class UserFeaturesLoaded extends UserFeatureState {
+  final List<String> favoriteMovies;
 
-class LikedMoviesLoaded extends UserFeatureState {
-  final List<String> likedMovies;
-
-  LikedMoviesLoaded(this.likedMovies);
+  UserFeaturesLoaded({required this.favoriteMovies});
 }
 
-class LikedMoviesError extends UserFeatureState {
+class UserFavoriteAdded extends UserFeatureState {}
+
+class UserFavoriteRemoved extends UserFeatureState {}
+
+class UserFeatureError extends UserFeatureState {
   final String message;
 
-  LikedMoviesError(this.message);
+  UserFeatureError({required this.message});
 }
