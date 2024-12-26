@@ -34,6 +34,7 @@ void main() async {
         create: (context) =>
             MovieFeatureBloc(movieRepository: movieRepository)),
     BlocProvider(
-        create: (context) => UserFeatureBloc(userRepository: userRepository)),
+        create: (context) => UserFeatureBloc(userRepository: userRepository)
+          ..add(FetchFavorites())),
   ], child: const MyApp()));
 }

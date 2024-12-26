@@ -77,4 +77,13 @@ class MovieRepository {
     );
     return _convertToMovieModels(data);
   }
+
+  Future<MovieModel> getMovieDetails(String movieId) async {
+    try {
+      final response = await dataProvider.fetchMovieDetails(movieId);
+      return MovieModel.fromJson(response);
+    } catch (e) {
+      throw Exception("Failed to fetch movie details: $e");
+    }
+  }
 }

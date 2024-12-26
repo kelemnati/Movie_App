@@ -37,14 +37,12 @@ class UserFeatureBloc extends Bloc<UserFeatureEvent, UserFeatureState> {
               List<String>.from(currentState.favoriteMovies)
                 ..remove(event.movieId);
           emit(UserFeaturesLoaded(favoriteMovies: updatedFavorites));
-          emit(UserFavoriteRemoved());
         } else {
           await userRepository.addLikedMovie(event.movieId);
           final updatedFavorites =
               List<String>.from(currentState.favoriteMovies)
                 ..add(event.movieId);
           emit(UserFeaturesLoaded(favoriteMovies: updatedFavorites));
-          emit(UserFavoriteAdded());
         }
       } catch (e) {
         emit(UserFeatureError(message: e.toString()));

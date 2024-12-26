@@ -25,10 +25,10 @@ class MovieFeatureBloc extends Bloc<MovieFeatureEvent, MovieFeatureState> {
 
   FutureOr<void> _fetchPopularMovies(
       FetchPopularMovies event, Emitter<MovieFeatureState> emit) async {
-    emit(MovieLoading());
+    emit(PopularMoviesLoading());
     try {
       final movies = await movieRepository.getMoviesByPopularity();
-      emit(MovieLoaded(movies));
+      emit(PopularMoviesLoaded(movies));
     } catch (e) {
       emit(MovieError(e.toString()));
     }
@@ -36,10 +36,10 @@ class MovieFeatureBloc extends Bloc<MovieFeatureEvent, MovieFeatureState> {
 
   FutureOr<void> _fetchTrendingMovies(
       FetchTrendingMovies event, Emitter<MovieFeatureState> emit) async {
-    emit(MovieLoading());
+    emit(TrendingMoviesLoading());
     try {
       final movies = await movieRepository.getMoviesByTrending('day');
-      emit(MovieLoaded(movies));
+      emit(TrendingMoviesLoaded(movies));
     } catch (e) {
       emit(MovieError(e.toString()));
     }
@@ -47,10 +47,10 @@ class MovieFeatureBloc extends Bloc<MovieFeatureEvent, MovieFeatureState> {
 
   FutureOr<void> _fetchTopRatedMovies(
       FetchTopRatedMovies event, Emitter<MovieFeatureState> emit) async {
-    emit(MovieLoading());
+    emit(TopRatedMoviesLoading());
     try {
       final movies = await movieRepository.getMoviesByRating();
-      emit(MovieLoaded(movies));
+      emit(TopRatedMoviesLoaded(movies));
     } catch (e) {
       emit(MovieError(e.toString()));
     }
