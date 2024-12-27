@@ -2,6 +2,7 @@ import 'dart:convert';
 
 // import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_app/Data/model/movie_model.dart';
 import 'package:movie_app/secret_key.dart';
 
 class MovieService {
@@ -127,6 +128,20 @@ class MovieService {
       return json.decode(response.body);
     } else {
       throw Exception('Failed to load movie details');
+    }
+  }
+
+  Future<List<MovieModel>> getMoviesDetailsBatch(List<int> movieIds) async {
+    try {
+      final movies = await Future.wait(
+        movieIds.map((id) async {
+          final details = await fetchMovieDetail(id);
+          return MovieModel.fromJson(details); // Convert to MovieModel
+        }),
+      );
+      return movies;
+    } catch (e) {
+      throw Exception("Failed to fetch movie details: $e");
     }
   }
 }

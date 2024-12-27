@@ -6,28 +6,16 @@ class MovieFeatureInitial extends MovieFeatureState {}
 
 class MovieLoading extends MovieFeatureState {}
 
-class PopularMoviesLoading extends MovieFeatureState {}
+class MovieFeatureLoaded extends MovieFeatureState {
+  final List<MovieModel> popularMovies;
+  final List<MovieModel> trendingMovies;
+  final List<MovieModel> topRatedMovies;
 
-class TrendingMoviesLoading extends MovieFeatureState {}
-
-class TopRatedMoviesLoading extends MovieFeatureState {}
-
-class PopularMoviesLoaded extends MovieFeatureState {
-  final List<MovieModel> movies;
-
-  PopularMoviesLoaded(this.movies);
-}
-
-class TrendingMoviesLoaded extends MovieFeatureState {
-  final List<MovieModel> movies;
-
-  TrendingMoviesLoaded(this.movies);
-}
-
-class TopRatedMoviesLoaded extends MovieFeatureState {
-  final List<MovieModel> movies;
-
-  TopRatedMoviesLoaded(this.movies);
+  MovieFeatureLoaded({
+    required this.popularMovies,
+    required this.trendingMovies,
+    required this.topRatedMovies,
+  });
 }
 
 // State for all movies in the home page (generalized state)

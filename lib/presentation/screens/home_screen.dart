@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:movie_app/Data/data_provider/data_provider.dart';
+import 'package:movie_app/Data/repository/movie_repo.dart';
 import 'package:movie_app/blocs/authentication/authentication_bloc.dart';
 import 'package:movie_app/blocs/bottom_navigation/bottom_nav_cubit.dart';
 import 'package:movie_app/blocs/movie_feature/movie_feature_bloc.dart';
@@ -12,24 +14,8 @@ import 'package:movie_app/presentation/screens/search_screen.dart';
 import 'package:movie_app/presentation/widgets/common_widgets.dart';
 import 'package:movie_app/presentation/widgets/movie_section.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    super.initState();
-
-    // Dispatch movie events when the screen initializes
-    final movieBloc = context.read<MovieFeatureBloc>();
-    movieBloc.add(FetchPopularMovies());
-    movieBloc.add(FetchTrendingMovies());
-    movieBloc.add(FetchTopRatedMovies());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,51 +28,27 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Popular Movies Section
             BlocBuilder<MovieFeatureBloc, MovieFeatureState>(
               builder: (context, state) {
-                if (state is PopularMoviesLoading) {
+                if (state is MovieLoading) {
                   return const Center(child: CircularProgressIndicator());
-                } else if (state is PopularMoviesLoaded) {
-                  return MovieSection(
-                    title: 'Popular Movies',
-                    movies: state.movies,
-                  );
-                } else if (state is MovieError) {
-                  return Center(child: Text(state.message));
-                }
-                return const SizedBox.shrink();
-              },
-            ),
-            const VerticalSpacer(height: 16),
-
-            // Trending Movies Section
-            BlocBuilder<MovieFeatureBloc, MovieFeatureState>(
-              builder: (context, state) {
-                if (state is TrendingMoviesLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is TrendingMoviesLoaded) {
-                  return MovieSection(
-                    title: 'Trending Movies',
-                    movies: state.movies,
-                  );
-                } else if (state is MovieError) {
-                  return Center(child: Text(state.message));
-                }
-                return const SizedBox.shrink();
-              },
-            ),
-            const VerticalSpacer(height: 16),
-
-            // Top Rated Movies Section
-            BlocBuilder<MovieFeatureBloc, MovieFeatureState>(
-              builder: (context, state) {
-                if (state is TopRatedMoviesLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is TopRatedMoviesLoaded) {
-                  return MovieSection(
-                    title: 'Top Rated Movies',
-                    movies: state.movies,
+                } else if (state is MovieFeatureLoaded) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      MovieSection(
+                        title: 'Popular Movies',
+                        movies: state.popularMovies,
+                      ),
+                      const VerticalSpacer(height: 16),
+                      MovieSection(
+                          title: 'Trending Movies',
+                          movies: state.trendingMovies),
+                      const VerticalSpacer(height: 16),
+                      MovieSection(
+                          title: 'Top Rated Movies',
+                          movies: state.topRatedMovies)
+                    ],
                   );
                 } else if (state is MovieError) {
                   return Center(child: Text(state.message));

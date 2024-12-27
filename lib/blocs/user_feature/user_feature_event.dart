@@ -4,6 +4,8 @@ abstract class UserFeatureEvent {}
 
 class FetchFavorites extends UserFeatureEvent {}
 
+class FetchFavoriteMovieDetail extends UserFeatureEvent {}
+
 class AddFavorite extends UserFeatureEvent {
   final String movieId;
 

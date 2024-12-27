@@ -8,6 +8,7 @@ class LikedMovieCard extends StatelessWidget {
     super.key,
     required this.movieTitle,
     required this.moviePoster,
+    required double rating,
   });
 
   @override

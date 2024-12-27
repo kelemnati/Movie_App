@@ -13,9 +13,7 @@ class MovieFeatureBloc extends Bloc<MovieFeatureEvent, MovieFeatureState> {
   final MovieRepository movieRepository;
   MovieFeatureBloc({required this.movieRepository})
       : super(MovieFeatureInitial()) {
-    on<FetchPopularMovies>(_fetchPopularMovies);
-    on<FetchTrendingMovies>(_fetchTrendingMovies);
-    on<FetchTopRatedMovies>(_fetchTopRatedMovies);
+    on<FetchAllMovies>(_fetchAllMovies);
     on<FetchMoviesByGenre>(_fetchMoviesByGenre);
     on<FetchMovieDetail>(_fetchMovieDetail);
     on<SearchMovies>(_searchMovies);
@@ -23,34 +21,17 @@ class MovieFeatureBloc extends Bloc<MovieFeatureEvent, MovieFeatureState> {
     on<FetchSearchSuggestions>(_fetchSearchSuggestions);
   }
 
-  FutureOr<void> _fetchPopularMovies(
-      FetchPopularMovies event, Emitter<MovieFeatureState> emit) async {
-    emit(PopularMoviesLoading());
+  FutureOr<void> _fetchAllMovies(event, Emitter<MovieFeatureState> emit) async {
+    emit(MovieLoading());
     try {
-      final movies = await movieRepository.getMoviesByPopularity();
-      emit(PopularMoviesLoaded(movies));
-    } catch (e) {
-      emit(MovieError(e.toString()));
-    }
-  }
+      final popularMovies = await movieRepository.getMoviesByPopularity();
+      final trendingMovies = await movieRepository.getMoviesByTrending('day');
+      final topRatedMovies = await movieRepository.getMoviesByRating();
 
-  FutureOr<void> _fetchTrendingMovies(
-      FetchTrendingMovies event, Emitter<MovieFeatureState> emit) async {
-    emit(TrendingMoviesLoading());
-    try {
-      final movies = await movieRepository.getMoviesByTrending('day');
-      emit(TrendingMoviesLoaded(movies));
-    } catch (e) {
-      emit(MovieError(e.toString()));
-    }
-  }
-
-  FutureOr<void> _fetchTopRatedMovies(
-      FetchTopRatedMovies event, Emitter<MovieFeatureState> emit) async {
-    emit(TopRatedMoviesLoading());
-    try {
-      final movies = await movieRepository.getMoviesByRating();
-      emit(TopRatedMoviesLoaded(movies));
+      emit(MovieFeatureLoaded(
+          popularMovies: popularMovies,
+          trendingMovies: trendingMovies,
+          topRatedMovies: topRatedMovies));
     } catch (e) {
       emit(MovieError(e.toString()));
     }

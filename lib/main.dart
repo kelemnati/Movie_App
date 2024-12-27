@@ -31,10 +31,17 @@ void main() async {
     BlocProvider(create: (context) => ThemeCubit()..loadTheme()),
     BlocProvider(create: (context) => BottomNavCubit()),
     BlocProvider(
-        create: (context) =>
-            MovieFeatureBloc(movieRepository: movieRepository)),
+        create: (context) => MovieFeatureBloc(movieRepository: movieRepository)
+          ..add(FetchAllMovies())),
     BlocProvider(
-        create: (context) => UserFeatureBloc(userRepository: userRepository)
-          ..add(FetchFavorites())),
+      create: (context) {
+        final bloc = UserFeatureBloc(
+          userRepository: userRepository,
+          movieRepository: movieRepository,
+        );
+        bloc.add(FetchFavoriteMovieDetail()); // Dispatch event
+        return bloc;
+      },
+    ),
   ], child: const MyApp()));
 }

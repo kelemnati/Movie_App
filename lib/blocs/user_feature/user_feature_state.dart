@@ -6,6 +6,12 @@ class UserFeatureInitial extends UserFeatureState {}
 
 class UserFeatureLoading extends UserFeatureState {}
 
+class UserFavoriteDetailsLoaded extends UserFeatureState {
+  final List<MovieModel> favoriteMovies;
+
+  UserFavoriteDetailsLoaded({required this.favoriteMovies});
+}
+
 class UserFeaturesLoaded extends UserFeatureState {
   final List<String> favoriteMovies;
 

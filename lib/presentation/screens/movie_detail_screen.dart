@@ -7,7 +7,8 @@ import 'package:movie_app/presentation/widgets/common_widgets.dart';
 class MovieDetailScreen extends StatelessWidget {
   final MovieModel movieModel;
 
-  const MovieDetailScreen({super.key, required this.movieModel});
+  const MovieDetailScreen(
+      {super.key, required this.movieModel, required int movieId});
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +33,10 @@ class MovieDetailScreen extends StatelessWidget {
               }
             },
             builder: (context, state) {
-              final isFavorite = state is UserFeaturesLoaded &&
-                  state.favoriteMovies.contains(movieModel.id.toString());
+              final currentState = context.read<UserFeatureBloc>().state;
+              final isFavorite = currentState is UserFeaturesLoaded &&
+                  currentState.favoriteMovies
+                      .contains(movieModel.id.toString());
               return IconButton(
                 onPressed: () {
                   context
