@@ -73,7 +73,7 @@ class MovieCard extends StatelessWidget {
                     title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: theme.typography.labelMedium,
+                    style: theme.typography.headlineSmall,
                   ),
                   const SizedBox(height: 4),
                   Row(

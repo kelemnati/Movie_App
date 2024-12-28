@@ -30,7 +30,7 @@ class MovieSection extends StatelessWidget {
             style: typography.headlineMedium,
           ),
         ),
-        const SizedBox(height: 8),
+        const VerticalSpacer(height: 8),
         SizedBox(
           height: 240, // Adjust based on MovieCard height
           child: ListView.builder(

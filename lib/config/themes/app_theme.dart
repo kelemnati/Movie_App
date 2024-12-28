@@ -55,7 +55,8 @@ class LightModeTheme extends AppTheme {
   @override
   Brightness get brightness => Brightness.light;
   @override
-  Color get primary => const Color(0xFFEB5B00);
+  // Color get primary => const Color(0xFFEB5B00);
+  Color get primary => const Color.fromARGB(255, 14, 10, 8);
   @override
   Color get secondary => const Color(0xFF03DAC6);
   @override
@@ -64,11 +65,11 @@ class LightModeTheme extends AppTheme {
   Color get alternate => const Color(0xFFBB86FC);
 
   @override
-  Color get primaryText => const Color.fromARGB(255, 92, 129, 148); // Grey 400
+  Color get primaryText => const Color(0xFF000000); // Black
   @override
-  Color get secondaryText => const Color(0xFF546E7A); // Dark Grey
+  Color get secondaryText => const Color(0xFF000000); // Black
   @override
-  Color get tertiaryText => const Color(0xFF757575);
+  Color get tertiaryText => const Color(0xFF000000); // Black
 
   @override
   Color get primaryBackground => const Color(0xFFFFFFFF); // White
@@ -103,7 +104,7 @@ class LightModeTheme extends AppTheme {
   double get radius => 40;
 
   @override
-  Color get primaryBtnText => const Color(0xFFFFFFFF);
+  Color get primaryBtnText => const Color.fromARGB(255, 19, 11, 11);
   @override
   Color get lineColor => Colors.black12;
   @override
@@ -130,20 +131,20 @@ class DarkModeTheme extends AppTheme {
   @override
   Brightness get brightness => Brightness.dark;
   @override
-  Color get primary => const Color(0xFF121212);
+  Color get primary => const Color.fromARGB(255, 244, 230, 230);
   @override
-  Color get secondary => const Color(0xFFEB5B00);
+  Color get secondary => const Color.fromARGB(255, 17, 11, 7);
   @override
   Color get tertiary => const Color(0xFFBB86FC);
   @override
   Color get alternate => const Color(0xFF3700B3);
 
   @override
-  Color get primaryText => const Color(0xFFFFFFFF); // Orange
+  Color get primaryText => const Color(0xFFFFFFFF); // White
   @override
-  Color get secondaryText => const Color(0xFFFA8C00); // Light Orange
+  Color get secondaryText => const Color(0xFFFFFFFF); // White
   @override
-  Color get tertiaryText => const Color(0xFFF57C00);
+  Color get tertiaryText => const Color(0xFFFFFFFF); // White
 
   @override
   Color get primaryBackground => const Color(0xFF000000); // Black

@@ -60,7 +60,7 @@ class ThemeTypography extends AppTypography {
         fontFamily: fontFamily,
         color: theme.primary,
         fontWeight: FontWeight.bold,
-        fontSize: 26,
+        fontSize: 18,
       );
 
   @override
