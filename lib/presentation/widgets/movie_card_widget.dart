@@ -29,7 +29,6 @@ class MovieCard extends StatelessWidget {
             MaterialPageRoute(
                 builder: (context) => MovieDetailScreen(
                       movieModel: movieModel,
-                      movieId: movieModel.id,
                     )));
       },
       child: Container(

@@ -34,14 +34,10 @@ void main() async {
         create: (context) => MovieFeatureBloc(movieRepository: movieRepository)
           ..add(FetchAllMovies())),
     BlocProvider(
-      create: (context) {
-        final bloc = UserFeatureBloc(
-          userRepository: userRepository,
-          movieRepository: movieRepository,
-        );
-        bloc.add(FetchFavoriteMovieDetail()); // Dispatch event
-        return bloc;
-      },
+      create: (context) => UserFeatureBloc(
+        userRepository: userRepository,
+        movieRepository: movieRepository,
+      ),
     ),
   ], child: const MyApp()));
 }
