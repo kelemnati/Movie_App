@@ -10,6 +10,24 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userName = context.select<AuthenticationBloc, String?>(
+      (bloc) {
+        if (bloc.state is AuthSuccess) {
+          final name = (bloc.state as AuthSuccess).userName;
+          return name.isNotEmpty
+              ? '${name[0].toUpperCase()}${name.substring(1)}'
+              : "User";
+        }
+        return "User";
+      },
+    );
+    final userEmail = context.select<AuthenticationBloc, String?>((bloc) {
+      if (bloc.state is AuthSuccess) {
+        final email = (bloc.state as AuthSuccess).email;
+        return email;
+      }
+      return "Unknown Email";
+    });
     final theme = AppTheme.of(context);
     final typography = theme.typography;
 
@@ -50,12 +68,12 @@ class ProfileScreen extends StatelessWidget {
             const VerticalSpacer(height: 10),
             // User Information
             Text(
-              "Nathnael",
+              "$userName",
               style: typography.headlineLarge,
             ),
             const SizedBox(height: 5),
             Text(
-              "natikelemel@gmail.com",
+              "$userEmail",
               style:
                   typography.bodyMediumWhite.copyWith(color: theme.primaryText),
             ),

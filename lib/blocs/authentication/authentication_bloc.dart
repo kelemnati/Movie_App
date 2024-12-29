@@ -23,7 +23,7 @@ class AuthenticationBloc
     try {
       final user = await userRepository.signUp(
           event.email, event.password, event.userName);
-      emit(AuthSuccess(userName: user.userName));
+      emit(AuthSuccess(userName: user.userName, email: user.email));
     } catch (e) {
       emit(AuthFailure(e.toString()));
     }
@@ -34,7 +34,7 @@ class AuthenticationBloc
     emit(AuthLoading());
     try {
       final user = await userRepository.signIn(event.email, event.password);
-      emit(AuthSuccess(userName: user.userName));
+      emit(AuthSuccess(userName: user.userName, email: user.email));
     } catch (e) {
       emit(AuthFailure(e.toString()));
     }

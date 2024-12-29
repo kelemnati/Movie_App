@@ -12,11 +12,12 @@ class AuthLoading extends AuthenticationState {}
 
 class AuthSuccess extends AuthenticationState {
   final String userName;
+  final String email;
 
-  AuthSuccess({required this.userName});
+  AuthSuccess({required this.userName, required this.email});
 
   @override
-  List<Object?> get props => [userName];
+  List<Object> get props => [userName, email];
 }
 
 class AuthFailure extends AuthenticationState {
